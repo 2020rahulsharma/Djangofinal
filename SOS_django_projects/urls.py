@@ -22,9 +22,6 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    # Test submodule
-    path('test/', include("Test.urls")),
-
     # ORS submodule
     path('ORS/', include("ORS.urls")),
     path('', include("ORS.urls")),

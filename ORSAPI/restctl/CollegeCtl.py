@@ -140,29 +140,4 @@ class CollegeCtl(BaseCtl):
         return CollegeService()    
 
 
-    def search2(self,request, params = {}):
-        json_request=json.loads(request.body)
-        if(json_request):
-            params["collegeName"]=json_request.get("collegeName",None)
-            params["pageNo"]=json_request.get("pageNo",None)  
-
-
-        service=CollegeService()        
-        c=service.search(params)
-        
-       
-        res={}
-        if(c!=None):
-            res["resultkey"]=c["data"]
-            res["error"]=False
-            res["message"]="Data is found"
-        else:
-            res["error"]=True
-            res["message"]="record not found"
-        return JsonResponse(res)  
-
     
-       
-
-
-

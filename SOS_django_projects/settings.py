@@ -15,8 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ORS_TEMPLATE = os.path.join(BASE_DIR, "ORS/template")
-TEST_TEMPLATE = os.path.join(BASE_DIR, "Test/template")
-ORSAPI_TEMPLATE = os.path.join(BASE_DIR, "ORSAPI/template")
 STATIC_DIR = os.path.join(BASE_DIR, "ORS/static")
 
 # Quick-start development settings - unsuitable for production
@@ -39,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Test',
     'ORS',
     'ORSAPI',
     'service',
@@ -70,7 +67,7 @@ ROOT_URLCONF = 'SOS_django_projects.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ORS_TEMPLATE, TEST_TEMPLATE, ORSAPI_TEMPLATE],
+        'DIRS': [ORS_TEMPLATE],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

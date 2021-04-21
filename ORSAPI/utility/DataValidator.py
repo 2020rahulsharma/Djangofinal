@@ -20,8 +20,7 @@ class DataValidator:
         if(val == None or val == ""):
             return True
         else:
-
-            if(val<100 and val>=0):
+            if (0 <= int(val) <= 100):
                 return False
             else:
-                return True            
+                return True        

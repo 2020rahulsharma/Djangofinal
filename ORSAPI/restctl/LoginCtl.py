@@ -1,7 +1,3 @@
-
-
-
-
 from django.http import HttpResponse
 from .BaseCtl import BaseCtl
 from django.shortcuts import render
@@ -52,7 +48,7 @@ class LoginCtl(BaseCtl):
             if(json_request.get("password")!=None ):
                 q= q.filter( password = json_request.get("password"))
                 userList = q
-        #
+        
             if (userList.count() > 0): 
                 self.form["error"]=False
                 self.form["message"]="Login Successfully"
@@ -60,37 +56,47 @@ class LoginCtl(BaseCtl):
                 data= userList[0].to_json()
                 self.form["sessionKey"]=request.session.session_key
                 self.form["data"]=data
-                # res=JsonResponse({"form":self.form,"data":res})
+                
             else:
                 self.form["error"]=True
-                self.form["message"]="Login Id and Password is wrong"
-                # res=JsonResponse({"form":self.form,"data":res})
+                self.form["message"]="Login Id or Password is wrong"
+                
         return JsonResponse({"form":self.form,"data":res})
 
     def Forgetpassword(self,request,params={}): 
         json_request=json.loads(request.body)
         self.request_to_form(json_request) 
-        q = User.objects.filter(login_id = self.form["login_id"])
-        userList=q[0]
-        if(userList!=""):
-            emsg=EmailMessage()
-            emsg.to= [userList.login_id]
-            emsg.subject= "Forget Password"
-            mailResponse=EmailService.send(emsg,"forgotPassword",userList)
-            if(mailResponse==1):
-                self.form["error"] = False
-                self.form["message"] = "Please check your mail, Your password is send successfully"
-                request.session["user"] = userList
-                res = JsonResponse({"form":self.form})
+        res={}
+        
+
+        if(self.input_validation2()):
+            res["error"]=True
+            res["message"]=""
+            
+            
+        else:
+            q = User.objects.filter(login_id = self.form["login_id"])
+            userList=q[0]
+            if(userList!=""):
+                emsg=EmailMessage()
+                emsg.to= [userList.login_id]
+                emsg.subject= "Forget Password"
+                mailResponse=EmailService.send(emsg,"forgotPassword",userList)
+                if(mailResponse==1):
+                    self.form["error"] = False
+                    self.form["message"] = "Please check your mail, Your password is send successfully"
+                    request.session["user"] = userList
+                    res = JsonResponse({"form":self.form})
+                else:
+                    self.form["error"] = True
+                    self.form["message"] = "Please Check Your Internet Connection"
+                    res = JsonResponse({"form":self.form})
             else:
                 self.form["error"] = True
-                self.form["message"] = "Please Check Your Internet Connection"
+                self.form["message"] = "login id is not correct"
                 res = JsonResponse({"form":self.form})
-        else:
-            self.form["error"] = True
-            self.form["message"] = "login id is not correct"
-            res = JsonResponse({"form":self.form})
-        return res
+            return res
+        return JsonResponse({"form":self.form,"data":res})
 
     def input_validation(self):
         super().input_validation()
@@ -104,7 +110,13 @@ class LoginCtl(BaseCtl):
 
         return self.form["error"]
     
-     
+    def input_validation2(self):
+        
+        inputError =  self.form["inputError"]
+        if(DataValidator.isNull(self.form["login_id"])):
+            inputError["login_id"] = "Login can not be null"
+            self.form["error"] = True
+        return self.form["error"]
 
     # Template html of Role page    
     def get_template(self):

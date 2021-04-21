@@ -49,14 +49,14 @@ class MarksheetCtl(BaseCtl):
         else:
             res["error"]=True
             res["message"]="Data is not deleted"
-        return JsonResponse({"data":res["data"]})
+        return JsonResponse({"data":res})
 
     def search(self,request, params = {}):
-        # json_request=json.loads(request.body)
-        # if(json_request):
-        #     params["name"]=json_request.get("name",None)
-        #     params["rollNumber"]=json_request.get("rollNumber",None)
-        #     params["pageNo"]=json_request.get("pageNo",None)
+        json_request=json.loads(request.body)
+        if(json_request):
+            params["name"]=json_request.get("name",None)
+            params["rollNumber"]=json_request.get("rollNumber",None)
+            params["pageNo"]=json_request.get("pageNo",None)
      
         service=MarksheetService()        
         c=service.search(params)

@@ -82,7 +82,7 @@ class FacultyCtl(BaseCtl):
         json_request=json.loads(request.body)
         if(json_request):
             params["firstName"]=json_request.get("firstName",None)
-            
+            params["pageNo"]=json_request.get("pageNo",None)
         service=FacultyService()
         c=service.search(params)
         self.service = c['data']

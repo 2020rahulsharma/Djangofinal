@@ -43,32 +43,14 @@ class RoleCtl(BaseCtl):
         else:
             res["error"]=True
             res["message"]="Data is not deleted"
-        return JsonResponse({"data":res["data"]})
+        return JsonResponse({"data":res})
 
-    # def search(self,request, params = {}):
-    #     json_request=json.loads(request.body)
-    #     if(json_request):
-    #         params["name"]=json_request.get("name",None)
-            
-    #     service=RoleService()
-    #     c=service.search(params)
-    #     res={}
-    #     data=[]
-    #     for x in c:
-    #         data.append(x.to_json())
-    #     if(c!=None):
-    #         res["data"]=data
-    #         res["error"]=False
-    #         res["message"]="Data is found"
-    #     else:
-    #         res["error"]=True
-    #         res["message"]="record not found"
-    #     return JsonResponse({"data":res})
+    
     def search(self,request, params = {}):
-        # json_request=json.loads(request.body)
-        # if(json_request):
-        #     params["name"]=json_request.get("name",None)
-        #     params["pageNo"]=json_request.get("pageNo",None)
+        json_request=json.loads(request.body)
+        if(json_request):
+            params["name"]=json_request.get("name",None)
+            params["pageNo"]=json_request.get("pageNo",None)
      
         service=RoleService()        
         c=service.search(params)

@@ -54,13 +54,13 @@ class TimeTableCtl(BaseCtl):
         else:
             res["error"]=True
             res["message"]="Data is not deleted"
-        return JsonResponse({"data":res["data"]})
+        return JsonResponse({"data":res})
 
     def search(self,request, params = {}):
         json_request=json.loads(request.body)
         if(json_request):
             params["semester"]=json_request.get("semester",None)
-            # params["pageNo"]=json_request.get("pageNo",None)
+            params["pageNo"]=json_request.get("pageNo",None)
      
         service=TimeTableService()
         c=service.search(params)

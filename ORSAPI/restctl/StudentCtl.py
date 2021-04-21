@@ -47,13 +47,13 @@ class StudentCtl(BaseCtl):
         else:
             res["error"]=True
             res["message"]="Data is not deleted"
-        return JsonResponse({"data":res["data"]}) 
+        return JsonResponse({"data":res})
 
     def search(self,request, params = {}):
-        # json_request=json.loads(request.body)
-        # if(json_request):
-        #     params["collegeName"]=json_request.get("collegeName",None)
-        #     params["pageNo"]=json_request.get("pageNo",None)
+        json_request=json.loads(request.body)
+        if(json_request):
+            params["firstName"]=json_request.get("firstName",None)
+            params["pageNo"]=json_request.get("pageNo",None)
      
         service=StudentService()        
         c=service.search(params)
